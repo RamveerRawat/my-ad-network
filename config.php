@@ -3,19 +3,15 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Render Postgres Database ki EXTERNAL DATABASE URL yahan paste kijiye
-$db_url = "APNI_POSTGRES_EXTERNAL_URL_YAHAN_DAALEIN"; 
-
-$dbopts = parse_url($db_url);
-
-$host = $dbopts["host"];
-$port = $dbopts["port"];
-$user = $dbopts["user"];
-$pass = $dbopts["pass"];
-$dbname = ltrim($dbopts["path"], '/');
+// 1. Apne Render Postgres page se dekh kar ye alag-alag details bhariye:
+$host     = "DNP_HOST_NAME_JO_RENDER_PAR_HAI"; // Render page par 'Hostname' ke samne hoga
+$port     = "5432";                            // Postgres ka port hamesha 5432 hota hai
+$dbname   = "adnetwork_db";                    // Aapka database naam
+$user     = "adnetwork_db_user";               // Aapka username
+$pass     = "APKA_PASSWORD_JO_WIPER_DOTS_MEIN_THA"; // Render se password copy karke yahan daalein
 
 try {
-    // MySQL ke bajay Postgres (pgsql) connection handler
+    // Direct configuration string - no parse_url needed
     $conn = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $pass);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
